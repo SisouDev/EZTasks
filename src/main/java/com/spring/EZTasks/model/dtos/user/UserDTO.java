@@ -1,6 +1,9 @@
 package com.spring.EZTasks.model.dtos.user;
 
 import com.spring.EZTasks.utils.enums.Sector;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 import java.util.Objects;
@@ -11,6 +14,8 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 public class UserDTO {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
@@ -18,18 +23,8 @@ public class UserDTO {
     private String role;
     private Sector sector;
 
-
     public UserDTO(String email, String name, String password, String role, Sector sector) {
         this.email = email;
-        this.name = name;
-        this.password = password;
-        this.role = role;
-        this.sector = sector;
-    }
-
-    public UserDTO(String email, Long id, String name, String password, String role, Sector sector) {
-        this.email = email;
-        this.id = id;
         this.name = name;
         this.password = password;
         this.role = role;
