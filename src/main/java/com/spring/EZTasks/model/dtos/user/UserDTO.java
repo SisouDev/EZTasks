@@ -23,6 +23,7 @@ public class UserDTO {
     private String role;
     private Sector sector;
 
+    // TODO config userdto id problem with user id was not generated after save in userService
     public UserDTO(String email, String name, String password, String role, Sector sector) {
         this.email = email;
         this.name = name;
