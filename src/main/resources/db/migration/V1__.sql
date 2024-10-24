@@ -1,0 +1,13 @@
+ALTER TABLE user
+DROP
+COLUMN sector;
+
+ALTER TABLE user
+    ADD sector VARCHAR(255) NOT NULL;
+
+ALTER TABLE project
+DROP
+COLUMN status;
+
+ALTER TABLE project
+    ADD status VARCHAR(255) NOT NULL;

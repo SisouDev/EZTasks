@@ -1,5 +1,6 @@
 package com.spring.EZTasks.model.entities.user;
 
+import com.spring.EZTasks.model.entities.project.Project;
 import com.spring.EZTasks.utils.enums.user.Sector;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -8,6 +9,8 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -43,6 +46,14 @@ public class User implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Sector sector;
+
+    @ManyToMany(mappedBy = "members")
+    @ToString.Exclude
+    private List<Project> projectsAsMember = new ArrayList<>();
+
+    @OneToMany(mappedBy = "leader")
+    @ToString.Exclude
+    private List<Project> projectsAsLeader = new ArrayList<>();
 
     public User(String email, String name, String password, String role, Sector sector) {
         this.email = email;
