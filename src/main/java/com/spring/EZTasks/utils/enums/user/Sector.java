@@ -1,4 +1,4 @@
-package com.spring.EZTasks.utils.enums;
+package com.spring.EZTasks.utils.enums.user;
 
 import lombok.Getter;
 

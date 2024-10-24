@@ -1,7 +1,7 @@
 package com.spring.EZTasks.model.repositories.user;
 
 import com.spring.EZTasks.model.entities.user.User;
-import com.spring.EZTasks.utils.enums.Sector;
+import com.spring.EZTasks.utils.enums.user.Sector;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,6 +28,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByRole(String role);
     List<User> findAllByRoleAndSector(String name, Sector sector);
     List<User> findAllByNameAndRole(String name, String role);
+
+    List<User> findUsersByNameStartingWith(String name);
+    List<User> findUsersByNameEndingWith(String name);
+    List<User> findUsersByNameContainingIgnoreCase(String name);
+    List<User> findUsersByNameIsLikeIgnoreCase(String name);
+
 
     int countBySector(Sector sector);
     int countBySectorAndRole(Sector sector, String role);

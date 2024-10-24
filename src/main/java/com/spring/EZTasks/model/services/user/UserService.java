@@ -3,7 +3,7 @@ package com.spring.EZTasks.model.services.user;
 import com.spring.EZTasks.model.dtos.user.UserDTO;
 import com.spring.EZTasks.model.entities.user.User;
 import com.spring.EZTasks.model.repositories.user.UserRepository;
-import com.spring.EZTasks.utils.enums.Sector;
+import com.spring.EZTasks.utils.enums.user.Sector;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,9 @@ public class UserService {
     }
 
     private User convertToEntity(UserDTO userDTO) {
-        log.info(userDTO.getId().toString());
+        if (userDTO.getId() != null) {
+            log.info(userDTO.getId().toString());
+        }
         log.info(userDTO.toString());
         log.info(userDTO.getEmail());
         log.info(userDTO.getPassword());
@@ -89,13 +91,14 @@ public class UserService {
     }
 
     public UserDTO create(UserDTO userDTO) {
-        User user = convertToEntity(userDTO);
-        userRepository.save(user);
-        log.info("Saved user: {}", user);
-        if (user.getId() == null) {
-            throw new IllegalStateException("User ID was not generated after save");
+        if (isValidUser(userDTO)) {
+            User user = convertToEntity(userDTO);
+            user = userRepository.save(user);
+            log.info("Saved user: {}", user);
+            return convertToDTO(user);
+        } else {
+            throw new IllegalArgumentException("Invalid user");
         }
-        return convertToDTO(user);
     }
 
     public List<UserDTO> findAll() {
@@ -105,6 +108,13 @@ public class UserService {
         return users.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Optional<UserDTO> findById(Long id) {
+        log.info("Finding user by id : {}", id);
+        Optional<User> user = userRepository.findById(id);
+        log.info("Founded user : {}", user);
+        return user.map(this::convertToDTO);
     }
 
     public Optional<UserDTO> findByEmail(String email) {

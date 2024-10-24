@@ -1,9 +1,6 @@
 package com.spring.EZTasks.model.dtos.user;
 
-import com.spring.EZTasks.utils.enums.Sector;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.spring.EZTasks.utils.enums.user.Sector;
 import lombok.*;
 
 import java.util.Objects;
@@ -14,8 +11,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 public class UserDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String name;
     private String email;
@@ -23,7 +19,6 @@ public class UserDTO {
     private String role;
     private Sector sector;
 
-    // TODO config userdto id problem with user id was not generated after save in userService
     public UserDTO(String email, String name, String password, String role, Sector sector) {
         this.email = email;
         this.name = name;

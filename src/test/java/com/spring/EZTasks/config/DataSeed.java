@@ -2,7 +2,7 @@ package com.spring.EZTasks.config;
 
 import com.spring.EZTasks.model.entities.user.User;
 import com.spring.EZTasks.model.repositories.user.UserRepository;
-import com.spring.EZTasks.utils.enums.Sector;
+import com.spring.EZTasks.utils.enums.user.Sector;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,22 +16,16 @@ public class DataSeed {
     @Bean
     CommandLineRunner initDatabase(UserRepository userRepository) {
         return args -> {
-            User user1 = new User(
-                    "fulano@gmail.com", "Fulano",
-                    "senha123", "Engenheiro", Sector.ENG
-            );
+            userRepository.deleteAll();
 
-            User user2 = new User(
-                    "email@gmail.com", "Ciclano",
-                    "@senha123", "Analista", Sector.IT
-            );
+            User user1 = new User("gabriel@gmail.com", "Gabriel", "senha123", "Engenheiro", Sector.ENG);
+            User user2 = new User("jorge@gmail.com", "Jorge Santos", "@senha321", "Analista", Sector.MKT);
+            User user3 = new User("anelisa@ig.com", "Anelisa", "@senha22", "Analista", Sector.COM);
+            User user4 = new User("joao@ig.com", "Joao Pedro", "password123", "Engenheiro", Sector.IT);
+            User user5 = new User("tiago@gmail.com", "Tiago Paulo", "@password321", "Analista", Sector.MKT);
+            User user6 = new User("afonso@ig.com", "Afonso Luis", "password123", "Engenheiro", Sector.IT);
 
-            User user3 = new User(
-                    "emailteste@ig.com", "Pedro",
-                    "@senha123", "Analista", Sector.IT
-            );
-
-            userRepository.saveAll(Arrays.asList(user1, user2, user3));
+            userRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5, user6));
         };
     }
 }

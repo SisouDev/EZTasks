@@ -1,6 +1,6 @@
 package com.spring.EZTasks.model.entities.user;
 
-import com.spring.EZTasks.utils.enums.Sector;
+import com.spring.EZTasks.utils.enums.user.Sector;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,6 +13,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 @AllArgsConstructor
 @ToString
 @Table(name = "`user`")
@@ -25,26 +26,21 @@ public class User implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    @Setter
     @NotEmpty(message = "Name cannot be empty.")
     private String name;
 
     @Column(nullable = false, unique = true)
-    @Setter
     @Email(message = "Email is not valid.")
     @NotEmpty(message = "Email cannot be empty.")
     private String email;
 
     @Column(nullable = false)
-    @Setter
     private String password;
 
     @Column(nullable = false)
-    @Setter
     private String role;
 
     @Column(nullable = false)
-    @Setter
     @Enumerated(EnumType.STRING)
     private Sector sector;
 
