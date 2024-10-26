@@ -1,5 +1,8 @@
 package com.spring.EZTasks.model.entities.project;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.EZTasks.model.entities.task.Task;
 import com.spring.EZTasks.model.entities.user.User;
 import com.spring.EZTasks.utils.enums.project.Scope;
 import com.spring.EZTasks.utils.enums.project.Status;
@@ -53,6 +56,7 @@ public class Project implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "leader_id", nullable = false)
+    @JsonIgnore
     private User leader;
 
     @ManyToMany
@@ -61,8 +65,34 @@ public class Project implements Serializable {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonIgnore
     @ToString.Exclude
     private List<User> members = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    private List<Task> tasks = new ArrayList<>();
+
+    public Project(LocalDate deadline, String description, User leader, String name, Scope scope, Status status) {
+        this.deadline = deadline;
+        this.description = description;
+        this.leader = leader;
+        this.name = name;
+        this.scope = scope;
+        this.status = status;
+    }
+
+    public Project(Long id, String name, String description, LocalDate deadline, Status status, Scope scope, User leader, List<User> members) {
+        this.id = id;
+        this.deadline = deadline;
+        this.description = description;
+        this.leader = leader;
+        this.members = members;
+        this.name = name;
+        this.status = status;
+        this.scope = scope;
+    }
 
     @Override
     public boolean equals(Object o) {

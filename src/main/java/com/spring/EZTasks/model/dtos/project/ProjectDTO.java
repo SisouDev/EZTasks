@@ -24,4 +24,13 @@ public class ProjectDTO {
     private User leader;
     private List<User> members = new ArrayList<>();
 
+    public ProjectDTO(Long id, LocalDate deadline, String description, User leader, String name, Scope scope, Status status) {
+        this.id = id;
+        this.deadline = deadline;
+        this.description = description;
+        this.leader = leader;
+        this.name = name;
+        this.scope = scope;
+        this.status = status;
+    }
 }

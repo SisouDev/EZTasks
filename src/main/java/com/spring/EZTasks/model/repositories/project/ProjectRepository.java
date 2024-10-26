@@ -24,6 +24,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findByDeadlineIs(LocalDate deadline);
 
     List<Project> findAllByStatus(Status status);
+    List<Project> findAllByMembersId(Long memberId);
     List<Project> findAllByLeaderId(Long id);
     List<Project> findAllByScope(Scope scope);
     List<Project> findAllByStatusAndScope(Status status, Scope scope);
@@ -39,10 +40,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     int countAllByStatusAndScope(Status status, Scope scope);
     int countAllByLeaderIdIs(Long id);
 
-    @Modifying
-    int createProject(Project project);
 
     @Modifying
+    @Transactional
     @Query(
             "UPDATE Project p SET " +
                     "p.name = :name, " +
@@ -64,40 +64,43 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     );
 
     @Modifying
-    @Query(
-            "UPDATE Project p SET p.name =: name WHERE p.id = :id"
-    )
+    @Transactional
+    @Query("UPDATE Project p SET p.name = :name WHERE p.id = :id")
     int updateProjectNameById(@Param("id") Long id, @Param("name") String name);
 
     @Modifying
+    @Transactional
     @Query(
-            "UPDATE Project p SET p.description =: description WHERE p.id = :id"
+            "UPDATE Project p SET p.description = :description WHERE p.id = :id"
     )
     int updateProjectDescriptionById(@Param("id") Long id, @Param("description") String description);
 
     @Modifying
+    @Transactional
     @Query(
-            "UPDATE Project p SET p.status =: status WHERE p.id = :id"
+            "UPDATE Project p SET p.status = :status WHERE p.id = :id"
     )
-    int updateStatusById(Long id, Status status);
+    int updateStatusById(@Param("id") Long id, @Param("status") Status status);
 
     @Modifying
+    @Transactional
     @Query(
-            "UPDATE Project p SET p.deadline =: deadline WHERE p.id = :id"
+            "UPDATE Project p SET p.deadline = :deadline WHERE p.id = :id"
     )
-    int updateDeadlineById(Long id, LocalDate deadline);
+    int updateDeadlineById(@Param("id") Long id, @Param("deadline") LocalDate deadline);
 
     @Modifying
-    @Query(
-            "UPDATE Project p SET p.scope =: scope WHERE p.id = :id"
-    )
-    int updateScopeById(Long id, Scope scope);
+    @Transactional
+    @Query("UPDATE Project p SET p.scope = :scope WHERE p.id = :id")
+    int updateScopeById(@Param("id") Long id, @Param("scope") Scope scope);
+
 
     @Modifying
+    @Transactional
     @Query(
-            "UPDATE Project p SET p.leader.id =: leaderId WHERE p.id = :id"
+            "UPDATE Project p SET p.leader.id = :leaderId WHERE p.id = :id"
     )
-    int updateLeaderById(Long id, Long leaderId);
+    int updateLeaderById(@Param("id") Long id, @Param("leaderId") Long leaderId);
 
     @Modifying
     @Transactional

@@ -1,5 +1,6 @@
 package com.spring.EZTasks.model.entities.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.EZTasks.model.entities.project.Project;
 import com.spring.EZTasks.utils.enums.user.Sector;
 import jakarta.persistence.*;
