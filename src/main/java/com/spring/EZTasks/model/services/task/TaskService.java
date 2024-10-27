@@ -353,10 +353,14 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskDTO addCommentToTask(Long taskId, Comment comment) {
+    public TaskDTO addCommentToTask(Long taskId, Comment comment, Long authorId) {
         log.info("Starting addCommentToTask for taskId: {}", taskId);
         Task task = taskRepository.findByIdWithComments(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+        User author = userRepository.findById(authorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Author not found"));
+        comment.setAuthor(author);
 
         comment.setTask(task);
         commentRepository.save(comment);

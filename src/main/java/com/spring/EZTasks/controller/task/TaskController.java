@@ -103,8 +103,8 @@ public class TaskController {
     }
 
     @PostMapping("/{id}/comments")
-    public ResponseEntity<TaskDTO> addCommentToTask(@PathVariable Long id, @RequestBody Comment comment) {
-        TaskDTO updatedTask = taskService.addCommentToTask(id, comment);
+    public ResponseEntity<TaskDTO> addCommentToTask(@PathVariable Long id, @RequestBody Comment comment, @RequestParam Long authorId) {
+        TaskDTO updatedTask = taskService.addCommentToTask(id, comment, authorId);
         return ResponseEntity.ok(updatedTask);
     }
 
