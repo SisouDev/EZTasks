@@ -101,6 +101,22 @@ public class UserService {
         }
     }
 
+    public List<UserDTO> createUsers(List<UserDTO> userDTOList) {
+        List<User> users = userDTOList.stream()
+                .filter(this::isValidUser)
+                .map(this::convertToEntity)
+                .toList();
+
+        if (users.isEmpty()) {
+            throw new IllegalArgumentException("No users found");
+        }
+
+        List<User> savedUsers = userRepository.saveAll(users);
+        return savedUsers.stream()
+                .map(this::convertToDTO)
+                .toList();
+    }
+
     public List<UserDTO> findAll() {
         log.info("Finding all users");
         List<User> users = userRepository.findAll();

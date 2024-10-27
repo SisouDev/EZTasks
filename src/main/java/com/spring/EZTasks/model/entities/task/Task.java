@@ -1,5 +1,6 @@
 package com.spring.EZTasks.model.entities.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.EZTasks.model.entities.project.Project;
 import com.spring.EZTasks.model.entities.user.User;
 import com.spring.EZTasks.utils.enums.project.Status;
@@ -54,6 +55,7 @@ public class Task implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonIgnore
     private Project project;
 
     @ManyToMany
@@ -63,6 +65,7 @@ public class Task implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     @ToString.Exclude
+    @JsonIgnore
     private List<User> assignees;
 
     @ManyToMany
@@ -72,13 +75,49 @@ public class Task implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     @ToString.Exclude
+    @JsonIgnore
     private List<Tag> tags;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonIgnore
     private List<SubTask> subTasks = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
+
+    public Task(Long id, String title, String description, Status status, Project project, Priority priority, LocalDate deadline, List<User> assignees, List<Tag> tags) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.project = project;
+        this.priority = priority;
+        this.deadline = deadline;
+        this.assignees = assignees;
+        this.tags = tags;
+    }
+    public Task(String title, String description, Status status, Project project, Priority priority, LocalDate deadline, List<User> assignees, List<Tag> tags) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.project = project;
+        this.priority = priority;
+        this.deadline = deadline;
+        this.assignees = assignees;
+        this.tags = tags;
+    }
+
+    public Task(String title, String description, Status status, Project project, Priority priority, LocalDate deadline, List<Tag> tags) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.project = project;
+        this.priority = priority;
+        this.deadline = deadline;
+        this.tags = tags;
+    }
+
 }

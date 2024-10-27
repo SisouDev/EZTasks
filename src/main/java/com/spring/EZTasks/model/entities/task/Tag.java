@@ -1,5 +1,6 @@
 package com.spring.EZTasks.model.entities.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.EZTasks.utils.enums.task.Color;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,6 +32,12 @@ public class Tag implements Serializable {
     private Color color;
 
     @ManyToMany(mappedBy = "tags")
+    @ToString.Exclude
+    @JsonIgnore
     private List<Task> tasks;
 
+    public Tag(String name, Color color) {
+        this.name = name;
+        this.color = color;
+    }
 }

@@ -24,11 +24,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
         try {
             UserDTO createdUser = userService.create(userDTO);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/createUsers")
+    public ResponseEntity<List<UserDTO>> createUsers(@RequestBody List<UserDTO> userDTOList) {
+        try {
+            List<UserDTO> createdUsers = userService.createUsers(userDTOList);
+            return new ResponseEntity<>(createdUsers, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

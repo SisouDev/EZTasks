@@ -1,5 +1,6 @@
 package com.spring.EZTasks.model.entities.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.EZTasks.utils.enums.project.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -38,5 +39,6 @@ public class SubTask implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
+    @JsonIgnore
     private Task task;
 }

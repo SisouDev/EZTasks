@@ -1,5 +1,6 @@
 package com.spring.EZTasks.model.entities.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.EZTasks.model.entities.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -32,10 +33,12 @@ public class Comment implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
+    @JsonIgnore
     private User author;
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
+    @JsonIgnore
     private Task task;
 
     @Column

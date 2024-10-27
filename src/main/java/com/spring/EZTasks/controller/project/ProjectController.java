@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +27,9 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @PostMapping(value = "/create/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProjectDTO> createProject(@PathVariable Long id, @RequestBody ProjectDTO projectDTO) {
-        ProjectDTO createdProject = projectService.createProject(projectDTO, id);
+    @PostMapping(value = "/create/{leaderId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProjectDTO> createProject(@PathVariable Long leaderId, @RequestBody ProjectDTO projectDTO) {
+        ProjectDTO createdProject = projectService.createProject(projectDTO, leaderId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProject);
     }
 

@@ -66,23 +66,20 @@ public class ProjectService {
     }
 
     public boolean isProjectValid(ProjectDTO projectDTO) {
-        Project project = convertToEntity(projectDTO);
-        if (project.getName() == null || project.getName().length() < 3 || project.getName().length() > 20){
+        log.info("Validating ProjectDTO: {}", projectDTO);
+        if (projectDTO.getName().length() < 3 || projectDTO.getName().length() > 50) {
             log.info("Project name is empty or not valid");
             return false;
-        } else if (project.getDescription() == null || project.getDescription().length() < 5 || project.getDescription().length() > 200){
+        }
+        if (projectDTO.getDescription() == null || projectDTO.getDescription().length() < 5 || projectDTO.getDescription().length() > 200) {
             log.info("Project description is empty or not valid");
             return false;
-        } else if (project.getLeader().getId() == null) {
-            log.info("Project leader Id is null");
-            return false;
-        } else if (project.getMembers().isEmpty()) {
-            log.info("Project members is empty or not valid");
-        } else if (project.getDeadline() == null) {
+        }
+        if (projectDTO.getDeadline() == null) {
             log.info("Project deadline is empty or not valid");
             return false;
         }
-        log.info("Is valid: {}", project.getName());
+        log.info("Is valid: {}", projectDTO.getName());
         return true;
     }
 
@@ -90,11 +87,26 @@ public class ProjectService {
     public ProjectDTO createProject(ProjectDTO projectDTO, Long leaderId) {
         log.info(separator);
         log.info("Trying to create a new project");
+
+        if (leaderId == null) {
+            throw new IllegalArgumentException("Leader ID cannot be null");
+        }
+
         if (isProjectValid(projectDTO)) {
             User leader = userRepository.findById(leaderId)
                     .orElseThrow(() -> new IllegalArgumentException("Leader not found by id: " + leaderId));
+
             List<User> members = new ArrayList<>();
 
+            log.info("Received ProjectDTO: {}", projectDTO);
+
+            if (projectDTO.getMembers() != null) {
+                for (User memberDTO : projectDTO.getMembers()) {
+                    User member = userRepository.findById(memberDTO.getId())
+                            .orElseThrow(() -> new IllegalArgumentException("Member not found by id: " + memberDTO.getId()));
+                    members.add(member);
+                }
+            }
             Project project = new Project(
                     projectDTO.getDeadline(),
                     projectDTO.getDescription(),
@@ -105,8 +117,10 @@ public class ProjectService {
             );
             project.setMembers(members);
             project = projectRepository.save(project);
-            log.info("Successfully created project with leaderId {}", project);
+
+            log.info("Successfully created project with leaderId {}", leaderId);
             log.info(separator);
+
             return convertToDTO(project);
         } else {
             log.info("Project is not valid to create");
